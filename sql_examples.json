@@ -1,0 +1,98 @@
+[
+  {
+    "question": "How many users are registered?",
+    "sql_query": "SELECT COUNT(*) AS total_users FROM users;"
+  },
+  {
+    "question": "List all users and their roles.",
+    "sql_query": "SELECT first_name, last_name, role FROM users;"
+  },
+  {
+    "question": "List all garage names and their addresses.",
+    "sql_query": "SELECT garage_name, garage_address, garage_city, garage_state, country FROM garages;"
+  },
+  {
+    "question": "Which garage earned the most revenue?",
+    "sql_query": "SELECT g.garage_name, SUM(vs.total_amount) AS revenue FROM vehicle_service_summary vs JOIN garages g ON vs.garage_id = g.id GROUP BY g.garage_name ORDER BY revenue DESC LIMIT 1;"
+  },
+  {
+    "question": "List all garages owned by a specific user (ID = 3).",
+    "sql_query": "SELECT garage_name, garage_address FROM garages WHERE owner_id = 3;"
+  },
+  {
+    "question": "Which services does each garage provide?",
+    "sql_query": "SELECT g.garage_name, s.service_name FROM garage_services gs JOIN garages g ON gs.garage_id = g.id JOIN services s ON gs.service_id = s.id;"
+  },
+  {
+    "question": "How many customers have registered vehicles?",
+    "sql_query": "SELECT COUNT(DISTINCT customer_id) AS total_customers FROM customer_vehicle_info;"
+  },
+  {
+    "question": "Get the total revenue earned from all services.",
+    "sql_query": "SELECT SUM(total_amount) AS total_revenue FROM vehicle_service_summary;"
+  },
+  {
+    "question": "Find the most popular service (most booked).",
+    "sql_query": "SELECT s.service_name, COUNT(vs.service_id) AS total_bookings FROM vehicle_service_summary vs JOIN services s ON vs.service_id = s.id GROUP BY s.service_name ORDER BY total_bookings DESC LIMIT 1;"
+  },
+  {
+    "question": "List all vehicles associated with a specific user (ID = 5).",
+    "sql_query": "SELECT vehicle_id FROM customer_vehicle_info WHERE customer_id = 5;"
+  },
+  {
+    "question": "Which customers have used a specific service?",
+    "sql_query": "SELECT u.first_name, u.last_name FROM users u JOIN customer_vehicle_info cv ON u.id = cv.customer_id JOIN vehicle_service_summary vs ON cv.vehicle_id = vs.vehicle_id WHERE vs.service_id = (SELECT id FROM services WHERE service_name = 'Oil Change');"
+  },
+  {
+    "question": "What is the total amount spent by each customer?",
+    "sql_query": "SELECT u.first_name, u.last_name, SUM(vs.total_amount) AS total_spent FROM users u JOIN customer_vehicle_info cv ON u.id = cv.customer_id JOIN vehicle_service_summary vs ON cv.vehicle_id = vs.vehicle_id GROUP BY u.id ORDER BY total_spent DESC;"
+  },
+  {
+    "question": "Find all services provided by a specific garage (ID = 2).",
+    "sql_query": "SELECT s.service_name FROM garage_services gs JOIN services s ON gs.service_id = s.id WHERE gs.garage_id = 2;"
+  },
+  {
+    "question": "Get a list of garages with their total revenue.",
+    "sql_query": "SELECT g.garage_name, SUM(vs.total_amount) AS revenue FROM garages g JOIN vehicle_service_summary vs ON g.id = vs.garage_id GROUP BY g.garage_name ORDER BY revenue DESC;"
+  },
+  {
+    "question": "How many vehicles are registered in the system?",
+    "sql_query": "SELECT COUNT(*) AS total_vehicles FROM customer_vehicle_info;"
+  },
+  {
+    "question": "Find customers who own more than one vehicle.",
+    "sql_query": "SELECT customer_id, COUNT(vehicle_id) AS vehicle_count FROM customer_vehicle_info GROUP BY customer_id HAVING vehicle_count > 1;"
+  },
+  {
+    "question": "Which garages provide the most expensive services?",
+    "sql_query": "SELECT g.garage_name, MAX(s.service_charges) AS max_price FROM garage_services gs JOIN garages g ON gs.garage_id = g.id JOIN services s ON gs.service_id = s.id GROUP BY g.garage_name ORDER BY max_price DESC;"
+  },
+  {
+    "question": "Find the highest service charge among all services.",
+    "sql_query": "SELECT service_name, service_charges FROM services ORDER BY service_charges DESC LIMIT 1;"
+  },
+  {
+    "question": "List the details of the latest vehicle service transactions.",
+    "sql_query": "SELECT vs.service_date, u.first_name, u.last_name, g.garage_name, s.service_name, vs.total_amount FROM vehicle_service_summary vs JOIN users u ON vs.vehicle_id = u.id JOIN garages g ON vs.garage_id = g.id JOIN services s ON vs.service_id = s.id ORDER BY vs.service_date DESC LIMIT 5;"
+  },
+  {
+    "question": "Which customer has spent the most money on services?",
+    "sql_query": "SELECT u.first_name, u.last_name, SUM(vs.total_amount) AS total_spent FROM users u JOIN customer_vehicle_info cv ON u.id = cv.customer_id JOIN vehicle_service_summary vs ON cv.vehicle_id = vs.vehicle_id GROUP BY u.id ORDER BY total_spent DESC LIMIT 1;"
+  },
+  {
+    "question": "Which is the costliest service?",
+    "sql_query": "SELECT service_name, service_charges FROM services ORDER BY service_charges DESC LIMIT 1;"
+  },
+  {
+    "question": "Which is the cheapest service?",
+    "sql_query": "SELECT service_name, service_charges FROM services ORDER BY service_charges ASC LIMIT 1;"
+  },
+  {
+    "question":"give details about each garage seperately?",
+    "sql_query": "SELECT g.garage_name,g.garage_address,g.garage_city,g.garage_state,CONCAT(u.first_name, ' ', u.last_name) AS customer_detailsFROM garages g JOIN users u ON g.owner_id = u.id;"
+  },
+  {
+  "question":"What services are provided in garage speedy cars?" ,
+  "sql_query":" SELECT s.service_name FROM garage_services gs JOIN garages g ON gs.garage_id = g.id JOIN services s ON gs.service_id = s.id WHERE g.garage_name LIKE '%Speedy%' ORDER BY s.service_name IS NULL, s.service_name DESC;"
+  }
+]
