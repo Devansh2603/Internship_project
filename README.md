@@ -1,0 +1,1 @@
+This project will help you  to develop chat interface using llm , fastapi and mysql which will take input as natural language convert them into sql query using ollama models and give you back response in natural language . It is designed to work on specific database also .
